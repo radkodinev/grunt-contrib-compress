@@ -28,8 +28,10 @@ _Run this task with the `grunt compress` command._
 Task targets, files and options may be specified according to the grunt [Configuring tasks](http://gruntjs.com/configuring-tasks) guide.
 
 Node Libraries Used:
-[archiver](https://github.com/ctalkington/node-archiver) (for zip/tar)
-[zlib](http://nodejs.org/api/zlib.html#zlib_options) (for gzip).
+* [archiver](https://github.com/ctalkington/node-archiver) (for zip/tar)
+* [zlib](http://nodejs.org/api/zlib.html#zlib_options) (for gzip)
+* [iltorb](https://github.com/MayhemYDG/iltorb) (for Brotli)
+
 ### Options
 
 #### archive
@@ -39,12 +41,12 @@ Modes: `zip` `tar`
 This is used to define where to output the archive. Each target can only have one output file.
 If the type is a Function it must return a String.
 
-*This option is only appropriate for many-files-to-one compression modes like zip and tar.  For gzip for example, please use grunt's standard src/dest specifications.*
+*This option is only appropriate for many-files-to-one compression modes like zip and tar. For gzip and brotli for example, please use grunt's standard src/dest specifications.*
 
 #### mode
 Type: `String`
 
-This is used to define which mode to use, currently supports `gzip`, `deflate`, `deflateRaw`, `tar`, `tgz` (tar gzip) and `zip`.
+Determines the mode to use: `gzip`, `deflate`, `deflateRaw`, `tar`, `tgz` (tar gzip), `zip` and `br` (Brotli).
 
 Automatically detected per `dest:src` pair, but can be overridden per target if desired.
 
@@ -115,6 +117,21 @@ compress: {
   main: {
     options: {
       mode: 'gzip'
+    },
+    expand: true,
+    cwd: 'assets/',
+    src: ['**/*'],
+    dest: 'public/'
+  }
+}
+```
+
+```js
+// compress assets using brotli 1-to-1 for production
+compress: {
+  main: {
+    options: {
+      mode: 'br'
     },
     expand: true,
     cwd: 'assets/',
